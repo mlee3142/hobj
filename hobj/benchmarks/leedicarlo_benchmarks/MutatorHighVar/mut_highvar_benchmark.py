@@ -38,7 +38,7 @@ class MutatorHighVarBenchmark(Benchmark):
             worker_dim='worker_id'
         )
 
-    def evaluate_model(self, learner: lm.LearningModel, force_recompute: bool = False):
+    def evaluate_model(self, learner: lm.LearningModel, force_recompute: bool = False, seed = None):
         """
         :param learner: LearningModel
         :param force_recompute: bool. If True, recompute the model behavior, even if it is already cached.
@@ -46,7 +46,7 @@ class MutatorHighVarBenchmark(Benchmark):
         """
 
         # Get behavior of this model
-        ds_behavior = self.experiment.run(learner=learner, seed=0, force_recompute=force_recompute)
+        ds_behavior = self.experiment.run(learner=learner, seed=seed, force_recompute=force_recompute)
 
         k = ds_behavior.k.isel(stimulus_category=1) + (ds_behavior.n.isel(stimulus_category=0) - ds_behavior.k.isel(stimulus_category=0))
         n = ds_behavior.n.isel(stimulus_category=1) + ds_behavior.n.isel(stimulus_category=0)
@@ -263,6 +263,9 @@ class MutatorHighVarBenchmark(Benchmark):
                 early_perf=perf_early,
                 late_perf=perf_late,
             ),
+            coords = dict(
+                model_var_correction_term = float(hat_var_hat_prob_lapse_rate.mean())
+            )
         )
 
         return ds_scores

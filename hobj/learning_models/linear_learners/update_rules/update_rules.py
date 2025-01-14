@@ -236,6 +236,7 @@ class Exponential(UpdateRule):
 
 
 
+
 class CE(UpdateRule):
 
     def get_update(self, x:np.ndarray, w: np.ndarray, b:np.ndarray, logits: np.ndarray, action: int, reward: float):
@@ -260,7 +261,7 @@ class CE(UpdateRule):
 
         delta = x[:, None] * gts[None, :]
         return delta, 0
-
+[]
 
 class REINFORCE(UpdateRule):
 

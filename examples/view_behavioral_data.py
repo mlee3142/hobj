@@ -13,16 +13,17 @@ plt.xlabel('trial')
 plt.ylabel('subtask-and-subject averaged accuracy')
 plt.show()
 
+
 # %% View processed data for Experiment 2
 experiment2_benchmark = oneshot_benchmark.MutatorOneshotBenchmark()
 ds_experiment2 = experiment2_benchmark.ds_behavioral_statistics
 
-plt.figure(figsize = (12, 4))
+plt.figure(figsize=(12, 4))
 xx = np.arange(len(ds_experiment2.transformation_id))
 xlabels = ds_experiment2.transformation_id.values
 plt.errorbar(x=xx, y=ds_experiment2.perf, yerr=np.sqrt(ds_experiment2.hat_var_perf))
 plt.xlabel('trial')
 plt.ylabel('generalization accuracy')
-plt.xticks(xx, xlabels, rotation = 45, ha = 'right')
+plt.xticks(xx, xlabels, rotation=45, ha='right')
 plt.tight_layout()
 plt.show()

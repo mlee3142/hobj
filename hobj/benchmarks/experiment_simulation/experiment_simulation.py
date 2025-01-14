@@ -6,7 +6,7 @@ import os
 import xarray as xr
 import numpy as np
 from tqdm import tqdm
-
+from typing import Union
 
 class ExperimentSimulation(object):
     """
@@ -30,9 +30,9 @@ class ExperimentSimulation(object):
         raise NotImplementedError
         return [env.Environment()]
 
-    def run(self, learner: lm.LearningModel, seed: int, force_recompute=False, show_pbar=True):
+    def run(self, learner: lm.LearningModel, seed: Union[type(None), int], force_recompute=False, show_pbar=True):
 
-        savepath = os.path.join(self.cachedir, self.experiment_name, f'ds_{learner.learner_id}.nc')
+        savepath = os.path.join(self.cachedir, self.experiment_name, 'seed_'+str(seed), f'ds_{learner.learner_id}.nc')
         if os.path.exists(savepath) and not force_recompute:
             ds = xr.load_dataset(savepath)
             return ds
