@@ -63,7 +63,7 @@ class LearningCurveResampler(Resampler):
         """
         For each condition, bootstraps sequences of Bernoulli trials.
         ds:
-        :param k, n: ({condition_dim}, trial, {rep_dim})
+        :param ds: An xr.Dataset with data variables 'k' and 'n' with dims ('trial', condition_dim, rep_dim)
         """
         super().__init__()
         assert 'k' in ds.data_vars
@@ -81,6 +81,8 @@ class LearningCurveResampler(Resampler):
         condition_to_kn_dat = {}
         ntrials = len(ds.trial)
         for subtask, ds_subtask in ds.groupby(condition_dim):
+            ds_subtask = ds_subtask.sel({condition_dim: subtask})
+
             n = ds_subtask.n
             nsessions_with_data = ((n > 0).sum('trial') > 0).sum(rep_dim)
             valid_sessions = (n > 0).sum('trial') == ntrials
